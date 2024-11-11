@@ -354,11 +354,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f8a6873d73dd4d14f947eb584287941c, type: 2}
+      objectReference: {fileID: 2100000, guid: bee6d6ff94f07db44a59504c93f9ad70, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_Name
       value: plane1times2m_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
@@ -5683,7 +5688,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &714117955
 BoxCollider:
   m_ObjectHideFlags: 0

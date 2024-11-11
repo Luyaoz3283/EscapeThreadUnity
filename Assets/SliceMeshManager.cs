@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum InteractMethod
+{
+    FadeOut,
+    Slicing
+}
+
 public class SliceMeshManager : MonoBehaviour
 {
      // A point on the slicing line
@@ -10,14 +16,42 @@ public class SliceMeshManager : MonoBehaviour
     public MeshFilter firstSlicedPlane;
     public MeshFilter secondSlicedPlane;
     public Animator cameraAnimator;
+    public Material planeMaterial;
+    public float fadingFactor;
+    public float verticalExpandingFactor;
+    public float alongLineExpandingFactor;
+    public float maxVerticalExpandingWidth;
+    
+    public InteractMethod currentInteractMethod;
+    public float fadingTimeFactor;
     private int hitTimes;
     private Vector3 firstHitPoint;
     private Vector3 secondHitPoint;
     private Vector3 lineDirection; 
+    private bool startFading;
+    private float fadingProcess;
+    private float fadingTime;
+    private float currentAlongLineExpandingWidth;
+    private float currentVerticalExpandingWidth;
+
 
     void Start()
     {
-        hitTimes = 0;
+        hitTimes = 1;
+        firstHitPoint = new Vector3(0f,0f,0f);
+        planeMaterial.SetFloat("_A", 0);
+        planeMaterial.SetFloat("_B", 0);
+        planeMaterial.SetFloat("_C", 0);
+        planeMaterial.SetFloat("_Division", 0);
+        planeMaterial.SetFloat("_StartFading", 0.0f);
+        startFading = false;
+        currentAlongLineExpandingWidth = 0f;
+        currentVerticalExpandingWidth = 0f;
+        planeMaterial.SetFloat("_CurrentAlongLineExpandingWidth", currentAlongLineExpandingWidth);
+        planeMaterial.SetFloat("_CurrentVerticalExpandingWidth", currentVerticalExpandingWidth);
+        fadingProcess = 0f;
+        planeMaterial.SetFloat("_FadingProcess", fadingProcess);
+        fadingTime = 0f;
     }
 
     void Update()
@@ -42,12 +76,49 @@ public class SliceMeshManager : MonoBehaviour
                         secondHitPoint = localPoint;
                         Debug.Log("Getting second point" + secondHitPoint);
                         lineDirection = secondHitPoint - firstHitPoint;
-                        SlicePlane();
+                        //SlicePlane();
+                        if (currentInteractMethod == InteractMethod.FadeOut){
+                            FadeOutPlane();
+                        }
+                        if (currentInteractMethod == InteractMethod.Slicing){
+                            SlicePlaneWithShader();
+                        }
                         hitTimes++;
                     }
                 }
             }
         }
+        if (startFading && currentInteractMethod == InteractMethod.Slicing){
+            fadingTime += Time.deltaTime * fadingTimeFactor;
+            planeMaterial.SetFloat("_FadingTime", fadingTime);
+            if (fadingTime >= 3f)
+            {
+                MoveCamera();
+            }
+        }
+        if (currentInteractMethod == InteractMethod.FadeOut && startFading){
+            fadingProcess += Time.deltaTime * fadingFactor;
+            fadingProcess = Mathf.Clamp(fadingProcess, 0, 0.99f);
+            currentAlongLineExpandingWidth += Time.deltaTime * alongLineExpandingFactor;
+            currentVerticalExpandingWidth += Time.deltaTime * verticalExpandingFactor;
+            currentVerticalExpandingWidth = Mathf.Clamp(currentVerticalExpandingWidth, 0, maxVerticalExpandingWidth);
+            planeMaterial.SetFloat("_FadingProcess", fadingProcess);
+            planeMaterial.SetFloat("_CurrentAlongLineExpandingWidth", currentAlongLineExpandingWidth);
+            planeMaterial.SetFloat("_CurrentVerticalExpandingWidth", currentVerticalExpandingWidth);
+        }
+    }
+
+    void FadeOutPlane()
+    {
+        CalculateLineProperty();
+        startFading = true;
+        planeMaterial.SetFloat("_StartFading", 1.0f);
+    }
+
+    void SlicePlaneWithShader()
+    {
+        CalculateLineProperty();
+        startFading = true;
     }
 
     void SlicePlane()
@@ -193,5 +264,17 @@ public class SliceMeshManager : MonoBehaviour
 
     void MoveCamera(){
         cameraAnimator.SetBool("StartMoving", true);
+    }
+
+    void CalculateLineProperty(){
+        float A = secondHitPoint.y - firstHitPoint.y;
+        float B = firstHitPoint.x - secondHitPoint.x;
+        float C = secondHitPoint.x * firstHitPoint.y - secondHitPoint.y * firstHitPoint.x;
+        float Division = Mathf.Sqrt(A * A + B * B);;
+        planeMaterial.SetFloat("_A", A);
+        planeMaterial.SetFloat("_B", B);
+        planeMaterial.SetFloat("_C", C);
+        planeMaterial.SetFloat("_Division", Division);
+        planeMaterial.SetVector("_ClickPosition", secondHitPoint);
     }
 }
