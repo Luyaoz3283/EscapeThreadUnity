@@ -10,12 +10,14 @@ public enum InteractMethod
 
 public class SliceMeshManager : MonoBehaviour
 {
-     // A point on the slicing line
-    
+    // A point on the slicing line
+    private float textureScale = 0f;
+
+    [SerializeField] private float textureScaleSpeed = 1f;
     public GameObject plane;
     public MeshFilter firstSlicedPlane;
     public MeshFilter secondSlicedPlane;
-    public Animator cameraAnimator;
+    public CameraController camController;
     public Material planeMaterial;
     public float fadingFactor;
     public float verticalExpandingFactor;
@@ -28,7 +30,7 @@ public class SliceMeshManager : MonoBehaviour
     private Vector3 firstHitPoint;
     private Vector3 secondHitPoint;
     private Vector3 lineDirection; 
-    private bool startFading;
+    private bool startFadingOrSlicing;
     private float fadingProcess;
     private float fadingTime;
     private float currentAlongLineExpandingWidth;
@@ -44,14 +46,16 @@ public class SliceMeshManager : MonoBehaviour
         planeMaterial.SetFloat("_C", 0);
         planeMaterial.SetFloat("_Division", 0);
         planeMaterial.SetFloat("_StartFading", 0.0f);
-        startFading = false;
+        startFadingOrSlicing = false;
         currentAlongLineExpandingWidth = 0f;
         currentVerticalExpandingWidth = 0f;
         planeMaterial.SetFloat("_CurrentAlongLineExpandingWidth", currentAlongLineExpandingWidth);
         planeMaterial.SetFloat("_CurrentVerticalExpandingWidth", currentVerticalExpandingWidth);
         fadingProcess = 0f;
         planeMaterial.SetFloat("_FadingProcess", fadingProcess);
+        planeMaterial.SetFloat("_TextureScaledUp", 0f);
         fadingTime = 0f;
+        
     }
 
     void Update()
@@ -88,15 +92,17 @@ public class SliceMeshManager : MonoBehaviour
                 }
             }
         }
-        if (startFading && currentInteractMethod == InteractMethod.Slicing){
+        if (startFadingOrSlicing && currentInteractMethod == InteractMethod.Slicing){
             fadingTime += Time.deltaTime * fadingTimeFactor;
             planeMaterial.SetFloat("_FadingTime", fadingTime);
             if (fadingTime >= 3f)
             {
                 MoveCamera();
+                textureScale += textureScaleSpeed * Time.deltaTime;
+                planeMaterial.SetFloat("_TextureScaledUp", textureScale);
             }
         }
-        if (currentInteractMethod == InteractMethod.FadeOut && startFading){
+        if (currentInteractMethod == InteractMethod.FadeOut && startFadingOrSlicing){
             fadingProcess += Time.deltaTime * fadingFactor;
             fadingProcess = Mathf.Clamp(fadingProcess, 0, 0.99f);
             currentAlongLineExpandingWidth += Time.deltaTime * alongLineExpandingFactor;
@@ -111,14 +117,14 @@ public class SliceMeshManager : MonoBehaviour
     void FadeOutPlane()
     {
         CalculateLineProperty();
-        startFading = true;
+        startFadingOrSlicing = true;
         planeMaterial.SetFloat("_StartFading", 1.0f);
     }
 
     void SlicePlaneWithShader()
     {
         CalculateLineProperty();
-        startFading = true;
+        startFadingOrSlicing = true;
     }
 
     void SlicePlane()
@@ -263,7 +269,8 @@ public class SliceMeshManager : MonoBehaviour
     }
 
     void MoveCamera(){
-        cameraAnimator.SetBool("StartMoving", true);
+        camController.StartMoving();
+        Debug.Log("asdasd");
     }
 
     void CalculateLineProperty(){

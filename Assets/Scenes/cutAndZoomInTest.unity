@@ -308,7 +308,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.75
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
@@ -354,7 +354,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: bee6d6ff94f07db44a59504c93f9ad70, type: 2}
+      objectReference: {fileID: 2100000, guid: f909cdf01d637a34091436b86b40d08c, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_Name
@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -495,7 +496,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.33, y: 40.47, z: -9.31}
+  m_LocalPosition: {x: 16.99, y: 41.63, z: -11.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -553,7 +554,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 80169bc635e01354e8beda7965e66195, type: 2}
   m_CullingMode: 0
@@ -566,6 +567,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a954b9e2f13b0545ab43e3a81b45af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  bobSpeed: 14
+  bobAmount: 0.05
+  tiltAmount: 2
+  tiltSpeed: 5
 --- !u!1 &369449501
 GameObject:
   m_ObjectHideFlags: 0
@@ -5769,7 +5787,7 @@ Transform:
   m_GameObject: {fileID: 714117954}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.93, y: 40.66274, z: -10.46}
+  m_LocalPosition: {x: 23.53, y: 40.66274, z: -10.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11217,7 +11235,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.75
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
@@ -11263,7 +11281,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d5b84642fbc1532459c77edaee62ce15, type: 2}
+      objectReference: {fileID: 2100000, guid: f909cdf01d637a34091436b86b40d08c, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_Name
@@ -11487,7 +11505,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.75
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
@@ -11533,7 +11551,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d5b84642fbc1532459c77edaee62ce15, type: 2}
+      objectReference: {fileID: 2100000, guid: f909cdf01d637a34091436b86b40d08c, type: 2}
     - target: {fileID: 919132149155446097, guid: 0c950639b55e56248b050408ce329cd6,
         type: 3}
       propertyPath: m_Name
@@ -16519,11 +16537,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e40f14c28fa26a4ab2603e18a119591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textureScaleSpeed: 0.1
   plane: {fileID: 320936738}
   firstSlicedPlane: {fileID: 1503975049}
   secondSlicedPlane: {fileID: 1857423533}
-  cameraAnimator: {fileID: 330585548}
-  planeMaterial: {fileID: 2100000, guid: bee6d6ff94f07db44a59504c93f9ad70, type: 2}
+  camController: {fileID: 330585549}
+  planeMaterial: {fileID: 2100000, guid: f909cdf01d637a34091436b86b40d08c, type: 2}
   fadingFactor: 0.1
   verticalExpandingFactor: 0.3
   alongLineExpandingFactor: 0.9
