@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Angle
@@ -11,7 +12,12 @@ public enum Angle
 public class MouseClickCut : MonoBehaviour
 {
     public Angle angle;
+	private VineGrowController growController;
 
+
+	void Start(){
+		growController = this.gameObject.GetComponent<VineGrowController>();
+	}
     void Update(){
 
 		if(Input.GetMouseButtonDown(0)){
@@ -20,7 +26,8 @@ public class MouseClickCut : MonoBehaviour
 			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)){
 
 				GameObject victim = hit.collider.gameObject;
-				if(victim.tag != "Safe")
+				Debug.Log(hit.collider.gameObject+ "tag:" + victim.tag);
+				if(victim.tag == "cutable")
 				{
                    
                     if(angle == Angle.Up)
@@ -38,6 +45,7 @@ public class MouseClickCut : MonoBehaviour
 						Cutter.Cut(victim, hit.point, Vector3.right);
 						
 					}
+					growController.StartNextStage();
 				}
 			}
 
