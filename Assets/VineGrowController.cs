@@ -29,7 +29,7 @@ public class VineGrowController : MonoBehaviour
         if (!isGrowing) return;
         growProgress += Time.deltaTime*growFactor;
         vineMat.SetFloat("_Grow", growProgress);
-        Debug.Log("progress:" + growProgress);
+        //Debug.Log("progress:" + growProgress);
         if (growProgress >= growStages[currentGrowStage]){
             StopGrow();
         }

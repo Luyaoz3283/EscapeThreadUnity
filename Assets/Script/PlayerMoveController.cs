@@ -10,6 +10,7 @@ public class PlayerMoveController : MonoBehaviour
     
     [SerializeField]float stopDistance = 2f;
     [SerializeField]float stopAngle = 1f;
+    private CaptionManager captionManager;
     Vector3 newPosition;
     Vector3 finalLookVector;
     Quaternion targetRotation;
@@ -18,7 +19,12 @@ public class PlayerMoveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetMoveGoal(transform.position);
+        captionManager = GameObject.FindFirstObjectByType<CaptionManager>();
+        //initialize location
+        newPosition = transform.position;
+        Vector3 currentPosition = transform.position;
+        finalLookVector = newPosition - currentPosition;
+        targetRotation = Quaternion.FromToRotation(Vector3.forward, finalLookVector);
     }
 
     // Update is called once per frame
@@ -39,7 +45,6 @@ public class PlayerMoveController : MonoBehaviour
 				Debug.Log(hit.collider.gameObject+ "tag:" + victim.tag);
 				if(victim.tag == "viableLocation")
 				{
-                    Debug.Log("setting new goal-1");
                     SetMoveGoal(victim.transform.position);
 				}
 			}
@@ -48,11 +53,11 @@ public class PlayerMoveController : MonoBehaviour
     }
 
     void SetMoveGoal(Vector3 inPos){
-        Debug.Log("setting new goal");
         newPosition = inPos;
         Vector3 currentPosition = transform.position;
         finalLookVector = newPosition - currentPosition;
         targetRotation = Quaternion.FromToRotation(Vector3.forward, finalLookVector);
+        captionManager.DisplayCaption(0);
     }
 
     void Rotate()
