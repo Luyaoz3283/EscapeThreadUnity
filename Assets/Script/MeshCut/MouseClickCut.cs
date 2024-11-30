@@ -26,7 +26,6 @@ public class MouseClickCut : MonoBehaviour
 			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)){
 
 				GameObject victim = hit.collider.gameObject;
-				Debug.Log(hit.collider.gameObject+ "tag:" + victim.tag);
 				if(victim.tag == "cutable")
 				{
                    

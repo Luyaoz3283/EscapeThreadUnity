@@ -6,6 +6,7 @@ TagManager:
   tags:
   - cloth
   - cutable
+  - viableLocation
   layers:
   - Default
   - TransparentFX
