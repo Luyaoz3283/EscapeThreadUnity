@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/WorkingScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/FadeOut.unity
+    guid: 029f7b8883189fe439b2cbe199774816
+  - enabled: 1
+    path: Assets/Scenes/CameraMoveTestScene.unity
+    guid: b85ba8c21d378a447a17dce6ac15d2eb
+  - enabled: 1
+    path: Assets/Scenes/FadeIn.unity
+    guid: 4f7e10aa0feff2c4faa4f6ae62ad0384
   m_configObjects: {}
