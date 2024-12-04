@@ -2,20 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using System;
+using UnityEditor.Rendering;
 
 public class PlayerMoveController : MonoBehaviour
 {
+    public event Action EventReachedDestination;
     [SerializeField]float rotateSensitivity = 1f;
     [SerializeField]float moveSensitivity = 1f;
     
     [SerializeField]float stopDistance = 2f;
     [SerializeField]float stopAngle = 1f;
     private CaptionManager captionManager;
-    Vector3 newPosition;
-    Vector3 finalLookVector;
-    Quaternion targetRotation;
+    
     Camera cam;
     private bool allowFreeMovement = true;
+    private bool isRotating = false;
+    private bool isPositionaing = false;
+    private Vector3 newPosition;
+    private Vector3 newRotation;
+    private Quaternion targetRotation;
+    private float distance;
+    private Vector3 entireDistanceVector;
+    private float entireRotationVector;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +32,8 @@ public class PlayerMoveController : MonoBehaviour
         //initialize location
         newPosition = transform.position;
         Vector3 currentPosition = transform.position;
-        finalLookVector = newPosition - currentPosition;
-        targetRotation = Quaternion.FromToRotation(Vector3.forward, finalLookVector);
+        newRotation = newPosition - currentPosition;
+        targetRotation = Quaternion.FromToRotation(Vector3.forward, newRotation);
     }
 
     // Update is called once per frame
@@ -32,54 +41,56 @@ public class PlayerMoveController : MonoBehaviour
     {
         if (!allowFreeMovement) return;
 
-        Move();
-        Rotate();
-        
-        //detect click
-        if(Input.GetMouseButtonDown(0)){
-			RaycastHit hit;
-
-			if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit)){
-
-				GameObject victim = hit.collider.gameObject;
-				Debug.Log(hit.collider.gameObject+ "tag:" + victim.tag);
-				if(victim.tag == "viableLocation")
-				{
-                    SetMoveGoal(victim.transform.position);
-				}
-			}
-
-		}
+        if (isPositionaing) Move();
+        if (isRotating) Rotate();
+        if (!isRotating && !isPositionaing) 
+        {
+            EventReachedDestination?.Invoke(); 
+        }
     }
 
-    void SetMoveGoal(Vector3 inPos){
-        newPosition = inPos;
-        Vector3 currentPosition = transform.position;
-        finalLookVector = newPosition - currentPosition;
-        targetRotation = Quaternion.FromToRotation(Vector3.forward, finalLookVector);
+    public bool RequestMoveToNewGoal(Vector3 newPos, Vector3 newRot){
+        if (isPositionaing || isRotating) {
+            Debug.Log("is moving");
+            return false;
+        }
+        isPositionaing = true;
+        isRotating = true;
+        newPosition = newPos;
+        newRotation = newRot;
+        entireDistanceVector = newPosition - transform.position;
+        entireRotationVector = Vector3.Angle(transform.forward, newRotation);
+        targetRotation = Quaternion.FromToRotation(Vector3.forward, newRotation);
         captionManager.DisplayCaption(0);
+        Debug.Log("trigger moving");
+        return true;
     }
 
     void Rotate()
     {
+        float secondUse = entireDistanceVector.magnitude / moveSensitivity;
         //rotation
         Vector3 currentLookDir = transform.forward;    
-        float angleNeedsToRotate = Vector3.Angle(currentLookDir, finalLookVector);
-        if (angleNeedsToRotate <= stopAngle){
+        float currentAngleLeft = Vector3.Angle(currentLookDir, newRotation);
+        float speed = entireRotationVector / secondUse; 
+        Debug.Log("angle needs to rotate:" + currentAngleLeft);
+        if (currentAngleLeft <= stopAngle){
+            isRotating = false;
             return;
         }
         transform.rotation = Quaternion.RotateTowards(transform.rotation, 
-        targetRotation, rotateSensitivity * Time.deltaTime * angleNeedsToRotate/30f);
+        targetRotation, rotateSensitivity * Time.deltaTime * speed);
     }
 
     void Move(){
         //position
-        Vector3 currentPosition = transform.position;
-        Vector3 finalLookVector = newPosition - currentPosition;
-        if (finalLookVector.magnitude < stopDistance){
+        Debug.Log("distance:" + entireDistanceVector.magnitude);
+        float currentDistance = (transform.position - newPosition).magnitude;
+        if (currentDistance < stopDistance){
+            isPositionaing = false;
             return;
         }
-        Vector3 moveStep = finalLookVector * moveSensitivity * Time.deltaTime;
+        Vector3 moveStep = entireDistanceVector.normalized * moveSensitivity * Time.deltaTime;
         transform.position = transform.position + moveStep;
     }
 }

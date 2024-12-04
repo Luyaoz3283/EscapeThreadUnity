@@ -111,11 +111,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _A: 0.8004865
+    - _A: -0.17376813
     - _AlongLineFadingFactor: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _B: -0.47373733
+    - _B: -0.226931
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
@@ -133,12 +133,12 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Division: 0.93016434
+    - _Division: 0.28581995
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FadingProcess: 0
-    - _FadingTime: 10.306092
+    - _FadingTime: 10.302773
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -158,8 +158,8 @@ Material:
     - _StartFading_1: 0
     - _Strength: -0.06978034
     - _Surface: 0
-    - _TextureScaledUp: 0.9108195
-    - _VerticalFadingFactor: 0.41432855
+    - _TextureScaledUp: 0.91034037
+    - _VerticalFadingFactor: 0.41413653
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _currentAlongLineExpandingWidth: 0
@@ -168,7 +168,7 @@ Material:
     - _maxVertical: 0.97
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ClickPosition: {r: 0.47373733, g: 0.8004865, b: 0, a: 0}
+    - _ClickPosition: {r: 0.226931, g: -0.17376813, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
