@@ -12,12 +12,7 @@ public enum Angle
 public class MouseClickCut : MonoBehaviour
 {
     public Angle angle;
-	private VineGrowController growController;
 
-
-	void Start(){
-		growController = this.gameObject.GetComponent<VineGrowController>();
-	}
     void Update(){
 
 		if(Input.GetMouseButtonDown(0)){
@@ -44,7 +39,7 @@ public class MouseClickCut : MonoBehaviour
 						Cutter.Cut(victim, hit.point, Vector3.right);
 						
 					}
-					growController.StartNextStage();
+					VineGrowController.StartNextStage();
 				}
 			}
 

@@ -27,6 +27,6 @@ public class FadeInManager : MonoBehaviour
     }
 
     private void DisplayCaption(){
-        captionManager.DisplayCaption(0);
+        //captionManager.DisplayCaption(0);
     }
 }

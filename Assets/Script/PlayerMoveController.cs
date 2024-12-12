@@ -61,7 +61,7 @@ public class PlayerMoveController : MonoBehaviour
         entireDistanceVector = newPosition - transform.position;
         entireRotationVector = Vector3.Angle(transform.forward, newRotation);
         targetRotation = Quaternion.FromToRotation(Vector3.forward, newRotation);
-        captionManager.DisplayCaption(0);
+        //captionManager.DisplayCaption(0);
         Debug.Log("trigger moving");
         return true;
     }
